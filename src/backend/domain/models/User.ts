@@ -17,7 +17,7 @@ export type Medic = {
   crm: number
   cpf: string
   cnpj?: string
-  speciality: Speciality[]
+  speciality: Speciality
 }
 
 type Speciality = {
