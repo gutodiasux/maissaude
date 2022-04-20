@@ -1,7 +1,8 @@
 import { CreateUserError } from '../error'
+import { Customer, Medic } from '../models'
 
 export interface CreateUser {
-  perform: () => Promise<void>
+  perform: (params: CreateUser.Params) => Promise<CreateUser.Result>
 }
 
 export namespace CreateUser {
@@ -9,6 +10,8 @@ export namespace CreateUser {
     fullname: string
     email: string
     password: string
+    type: string
+    userProfile: Customer | Medic
   }
 
   export type Result = void | CreateUserError
