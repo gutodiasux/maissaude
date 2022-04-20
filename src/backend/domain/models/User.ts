@@ -1,5 +1,4 @@
-import { Customer } from '.'
-import { Medic } from './Medic'
+import { Customer, Medic } from '.'
 
 export type User = {
   fullname: string
