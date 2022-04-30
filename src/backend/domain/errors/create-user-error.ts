@@ -1,6 +1,6 @@
 export class CreateUserError extends Error {
   constructor () {
-    super('Unable to create a new user')
+    super('Create user failed')
     this.name = 'CreateUserError'
   }
 }
