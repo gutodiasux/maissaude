@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
-import { CreateUserService } from '../../../../backend/data/services/CreateUserService'
+import { CreateUserService } from '../../../../backend/data/services/create-user-service'
 
 const createMedic = new CreateUserService()
 

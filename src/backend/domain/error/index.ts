@@ -1,1 +1,2 @@
-export * from './CreateUserError'
+export * from './create-user-error'
+
