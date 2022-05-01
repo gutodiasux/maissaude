@@ -3,6 +3,13 @@ import { CreateUserService } from '../../../../../backend/data/services'
 import { CreateUserError } from '../../../../../backend/domain/errors'
 import { CreateUser } from '../../../../../backend/domain/features'
 
+class FindUserError extends Error {
+  constructor () {
+    super('Failed to find the user')
+    this.name = 'FindUserError'
+  }
+}
+
 class CreateUserRepositorySpy implements CreateUserRepository {
   name?: string
   email?: string

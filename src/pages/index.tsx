@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Homepage from '../components/Homepage'
 
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       <Head>
         <title>medmais</title>
       </Head>
-      <p>App works!</p>
+      <Homepage />
     </>
   )
 }
