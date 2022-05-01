@@ -10,7 +10,6 @@ function setupApiClient() {
       baseURL: 'https://maissaude-blue.vercel.app/api'
     })
   }
-
 }
 
 export const api = setupApiClient()
