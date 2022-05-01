@@ -15,4 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(201).end()
   }
+
+  if (req.method === 'GET') {
+    const patients = await prisma.patient.findMany({
+      orderBy: {
+        created_at: 'desc'
+      }
+    })
+
+    return res.status(200).json(patients)
+  }
 }

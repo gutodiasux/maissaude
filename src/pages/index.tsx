@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>medmais</title>
+        <title>Mais Saúde</title>
       </Head>
       <Homepage />
     </>

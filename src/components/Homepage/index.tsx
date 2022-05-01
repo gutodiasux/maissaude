@@ -1,20 +1,47 @@
-import { Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Heading, Input } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Button, Flex, FormControl, FormLabel, Grid, GridItem, Heading, Input, Spinner, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import React, { FormEvent, useState } from 'react'
 import InputMask from 'react-input-mask'
+import { useMutation, useQuery } from 'react-query'
 import { api } from '../../backend/infra/api'
+import { queryClient } from '../../pages/_app'
+
+type Patient = {
+  name: string
+  cpf: string
+  age: string
+}
 
 function Homepage() {
   const [patientName, setPatientName] = useState('')
   const [patientCPF, setPatientCPF] = useState('')
   const [patientAge, setPatientAge] = useState('')
 
-  const handlePatientRegister = async () => {
+  const mutation = useMutation(async () => {
     await api.post('/users', {
       name: patientName,
       cpf: patientCPF,
       age: patientAge
     })
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('patients')
+    }
+  })
+
+  const handlePatientRegister = (e: FormEvent) => {
+    e.preventDefault()
+    mutation.mutateAsync()
+    setPatientName('')
+    setPatientCPF('')
+    setPatientAge('')
   }
+
+  const patients = useQuery('patients', async () => {
+    const { data } = await api.get('/users')
+    return data
+  }, {
+    staleTime: 60 * 60 * 15
+  })
 
   return (
     <Box>
@@ -45,7 +72,7 @@ function Homepage() {
             </GridItem>
           </Grid>
           <Flex width={'100%'} justify={'flex-end'} marginTop={'24px'}>
-            <Button type='submit' colorScheme={'blue'} >
+            <Button type='submit' colorScheme={'blue'} isLoading={mutation.isLoading}>
               Cadastrar paciente
             </Button>
           </Flex>
@@ -54,8 +81,35 @@ function Homepage() {
         <Heading as='h3' fontSize={'xl'} fontWeight={'500'} marginTop={'40px'}>
           Lista de pacientes
         </Heading>
-        <Box as='form' margin={'16px 0'}>
-
+        <Box as='form' margin={'16px 0'} border={'1px'} borderColor={'gray.200'} borderRadius={'lg'}>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Nome completo</Th>
+                <Th>CPF</Th>
+                <Th>Idade</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {patients.isLoading ? (
+                <Spinner />
+              ) : patients.error ? (
+                <Box p={8} textAlign={'center'}>
+                  <Heading as='h3' fontSize={'lg'} fontWeight={500}>Não foi possível encontrar os pacientes</Heading>
+                </Box>
+              ) : (
+                patients.data.map((patient: Patient) => {
+                  return (
+                    <Tr key={patient.cpf}>
+                      <Td>{patient.name}</Td>
+                      <Td>{patient.cpf}</Td>
+                      <Td>{new Date(patient.age).toLocaleDateString('pt-BR')}</Td>
+                    </Tr>
+                  )
+                })
+              )}
+            </Tbody>
+          </Table>
         </Box>
       </Box>
     </Box>
