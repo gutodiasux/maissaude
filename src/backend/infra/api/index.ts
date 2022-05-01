@@ -7,7 +7,7 @@ function setupApiClient() {
     })
   } else {
     return axios.create({
-      baseURL: process.env.PRODUCTION_URL + '/api'
+      baseURL: 'https://maissaude-blue.vercel.app/api'
     })
   }
 
