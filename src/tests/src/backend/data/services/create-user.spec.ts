@@ -1,16 +1,7 @@
 import { CreateUserRepository } from '../../../../../backend/data/contracts/repositories'
+import { CreateUserService } from '../../../../../backend/data/services'
 import { CreateUserError } from '../../../../../backend/domain/errors'
 import { CreateUser } from '../../../../../backend/domain/features'
-
-class CreateUserService {
-  constructor (private readonly createUserRepo: CreateUserRepository) { }
-
-  async perform(params: CreateUser.Params): Promise<CreateUserError> {
-    await this.createUserRepo.create(params)
-
-    return new CreateUserError()
-  }
-}
 
 class CreateUserRepositorySpy implements CreateUserRepository {
   name?: string
